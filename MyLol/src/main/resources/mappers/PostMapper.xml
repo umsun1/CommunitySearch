@@ -113,14 +113,17 @@
 	</select>
 	
 	
-<insert id="insertPositionBoard">
+<insert id="insertPositionBoard" useGeneratedKeys="true" keyProperty="PB_KEY">
     INSERT INTO position_board (PB_US_KEY, PB_STATE, PB_CONTENT, PB_TIME, PB_UPD)
-    VALUES (#{PB_US_KEY}, 1, #{PB_CONTENT}, now(), now())
+    VALUES (#{PB_US_KEY}, #{PB_STATE}, #{PB_CONTENT}, NOW(), NOW())
 </insert>
 
-<insert id="insertPosition">
+<insert id="insertPositionLineList">
     INSERT INTO position (PS_PB_KEY, PS_ORDER, PS_LINE)
-    VALUES (#{PS_PB_KEY}, #{PS_ORDER}, #{PS_LINE})
+    VALUES
+    <foreach collection="list" item="line" separator=",">
+        (#{line.PS_PB_KEY}, #{line.PS_ORDER}, #{line.PS_LINE})
+    </foreach>
 </insert>
 
 </mapper>

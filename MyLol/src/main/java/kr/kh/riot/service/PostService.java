@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.model.vo.FileVO;
+import kr.kh.riot.model.vo.PositionBoardVO;
+import kr.kh.riot.model.vo.PositionLineVO;
 import kr.kh.riot.model.vo.PositionVO;
 import kr.kh.riot.model.vo.PostVO;
 import kr.kh.riot.model.vo.UserVO;
@@ -40,7 +42,11 @@ public interface PostService {
 
 	List<PositionVO> getDuoList();
 
-	boolean insertPosition(PositionVO positionVO);
+	//boolean insertPosition(PositionVO positionVO);
+
+	void insertPositionBoard(PositionBoardVO board);
+
+	void insertPositionLineList(List<PositionLineVO> lineList);
 
 
 

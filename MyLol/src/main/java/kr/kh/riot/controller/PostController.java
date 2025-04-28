@@ -22,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.model.vo.FileVO;
+import kr.kh.riot.model.vo.PositionBoardVO;
 import kr.kh.riot.model.vo.PositionLineVO;
 import kr.kh.riot.model.vo.PositionVO;
 import kr.kh.riot.model.vo.PostVO;
@@ -241,31 +242,38 @@ public class PostController {
 	    }
 	    return plainText;
 	}
-	
+
+    @GetMapping("/duo/write")
+    public String duoWrite() {
+        return "/post/duowrite"; //
+    }
 	
 	@PostMapping("/duo/write")
 	public String postDuoInsert(@RequestParam("PB_CONTENT") String content,
-	                             @RequestParam("PS_LINE1") String line1,
-	                             @RequestParam(value = "PS_LINE2", required = false) String line2,
-	                             HttpSession session) {
+            @RequestParam("PS_LINE1") String line1,
+            @RequestParam(value = "PS_LINE2", required = false) String line2,
+            HttpSession session) {
 
-	    UserVO user = (UserVO) session.getAttribute("user");
-	    if (user == null) return "redirect:/login";
-
-	    PositionVO positionVO = new PositionVO();
-	    positionVO.setPB_US_KEY(user.getUs_key());
-	    positionVO.setPB_CONTENT(content);
-
-	    List<PositionLineVO> lineList = new ArrayList<>();
-	    lineList.add(new PositionLineVO(0, 0, 1, line1)); // 1순위
-	    if (line2 != null && !line2.isEmpty()) {
-	        lineList.add(new PositionLineVO(0, 0, 2, line2)); // 2순위
-	    }
-	    positionVO.setPositionLineList(lineList);
-
-	    postService.insertPosition(positionVO);
-
-	    return "redirect:/duo/list";
+	UserVO user = (UserVO) session.getAttribute("user");
+	if (user == null) return "redirect:/login";
+	
+	PositionBoardVO board = new PositionBoardVO();
+	board.setPB_US_KEY(user.getUs_key());
+	board.setPB_STATE(1);
+	board.setPB_CONTENT(content);
+	
+	postService.insertPositionBoard(board); // **insert 후 board에 PB_KEY 세팅될 것**
+	
+	List<PositionLineVO> lineList = new ArrayList<>();
+	lineList.add(new PositionLineVO(0, board.getPB_KEY(), 1, line1)); // 1순위
+	if (line2 != null && !line2.isEmpty()) {
+	lineList.add(new PositionLineVO(0, board.getPB_KEY(), 2, line2)); // 2순위
 	}
-
+	
+	postService.insertPositionLineList(lineList);
+	
+	return "redirect:/post/duo";
+	}
+	
+		
 }

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.model.vo.FileVO;
+import kr.kh.riot.model.vo.PositionBoardVO;
 import kr.kh.riot.model.vo.PositionLineVO;
 import kr.kh.riot.model.vo.PositionVO;
 import kr.kh.riot.model.vo.PostVO;
@@ -44,9 +45,12 @@ public interface PostDao {
 	List<PositionVO> selectPositions(@Param("pb_key")int pb_key);
 
 	List<PositionVO> selectDuoList();
-	
-    boolean insertPositionBoard(PositionVO positionVO);
-    
-    boolean insertPosition(PositionLineVO position);
 
+	boolean insertPositionBoard(PositionBoardVO board);
+
+	int insertPositionLineList(List<PositionLineVO> list);
+	
+
+    
+    
 }

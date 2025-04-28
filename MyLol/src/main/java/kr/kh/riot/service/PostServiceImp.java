@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import kr.kh.riot.dao.PostDao;
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.model.vo.FileVO;
+import kr.kh.riot.model.vo.PositionBoardVO;
 import kr.kh.riot.model.vo.PositionLineVO;
 import kr.kh.riot.model.vo.PositionVO;
 import kr.kh.riot.model.vo.PostVO;
@@ -235,7 +236,7 @@ public class PostServiceImp implements PostService{
 		return postDao.selectDuoList();
 	}
 	
-
+/*
 	@Override
 	@Transactional
 	public boolean insertPosition(PositionVO positionVO) {
@@ -251,4 +252,15 @@ public class PostServiceImp implements PostService{
 	    }
 	    return true;
 	}
+	*/
+	@Override
+	public boolean insertPositionBoard(PositionBoardVO board) {
+	    return postDao.insertPositionBoard(board);
+	}
+
+	@Override
+	public boolean insertPositionLineList(List<PositionLineVO> list) {
+	    return postDao.insertPositionLineList(list) > 0;
+	}
+
 }
