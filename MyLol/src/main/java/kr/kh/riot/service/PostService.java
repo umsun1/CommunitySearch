@@ -44,9 +44,9 @@ public interface PostService {
 
 	//boolean insertPosition(PositionVO positionVO);
 
-	void insertPositionBoard(PositionBoardVO board);
+	boolean insertPositionBoard(PositionBoardVO board);
 
-	void insertPositionLineList(List<PositionLineVO> lineList);
+	boolean insertPositionLineList(List<PositionLineVO> lineList);
 
 
 
