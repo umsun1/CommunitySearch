@@ -5,59 +5,126 @@
 <head>
     <meta charset="UTF-8">
     <title>듀오 모집 게시판</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     
+    
+    	<style>
+	
+
+		/* 사이드바 */
+		.sidebar-l {
+  		  position: fixed;
+		  top: 7rem;
+		  left: 0;
+		  width: 12.5rem;
+		  height: auto;
+		  padding: 1rem;
+		  border: 1px solid gray;
+		  background: #f9f9f9;
+		}
+		
+		/* 게시판 링크 */
+		.board-link, .board-link2 {
+		  font-size:1rem;
+		  display: block;
+		  padding: 8px 10px;
+		  margin-bottom: 5px;
+		  color: #333;
+		  border-radius: 4px;
+		  text-decoration: none;
+		  transition: all 0.2s;
+		}
+		
+		.board-link:hover, .board-link2:hover, .board-link.active, .board-link.active {
+		  background-color: #28a745;
+		  color: white;
+		}
+		@media (min-width: 1200px) {
+			.pl-container, .btn-container{
+			  margin-left: 7.5rem; 
+			  padding: 1rem;
+			}
+			.pl-container{
+			  min-height: 1000px;
+			}
+		}
+
+	</style>
 </head>
 <body>
     <div class="container mt-4">
         <h1 class="mt-3">듀오 모집 게시판</h1>
-        <h4>해야할 부분</h4>
-        <ul>
-            <li>게시글 목록 가져오기</li>
-            <li>position_board와 관련있어 보임</li>
-            <li>position 이건 position_board를 참조하고 있네</li>
-            <li>일단 진짜 해야할 부분은 게시글 작성, 수정, 삭제임</li>
-            <li>작성할 때에는 카테고리가 그냥 정해져있는건가? 그렇다면 뭘로 되어있는지 확인해보기</li>
-            <li>작성 양식은 제목, 내용, 가고자하는 라인, 계정 정보(닉네임, 태그) => 티어, 모스트픽 3개 가져옴</li>
-            <li>계정 정보를 가져오려면 RiotApiService 기능 좀 쓰기</li>
-            <li>회원정보에는 롤 닉네임과 태그가 없음.. SS가 있긴한데 참조되어있지도 않아서 이거 그냥 못쓴다고 봐야함</li>
-            <li>getSummonerByRiotId => getSummonerByPuuid => getLOLLeagueInfo 이걸로 티어랑 점수까지는 가져올 수 있음.</li>
-            <li>그럼 postDuoInsert 이런거 컨트롤러에서 만들 때 위 3개 메소드 써서 가져온걸 model로 보내야 하나? 아 애초에 회원 가입할 때 게임 닉네임과 태그를 입력받았어야 했음. 아님 수정에서라도..?</li>
-        </ul>
+	<!-- 사이드바 -->
+		<div class="sidebar-l d-none d-xl-block" id="sidebar-l">
+			<h5 class="mt-2 mb-2">-게시판-</h5>
+			<a href="#" class="board-link" data-num="0">전체</a>
+			<c:choose>
+				<c:when test="${not empty boardList}">
+					<c:forEach items="${boardList}" var="board">
+						<a href="#" class="board-link btn-board" data-num="${board.bo_key}">${board.bo_name}</a>
+					</c:forEach>
+				    <a class="board-link2" href="<c:url value='/post/duo' />">듀오모집게시판1</a>
+				    <a class="board-link2" href="<c:url value='/exampleTFT' />">TFT 배치 툴</a>
+				</c:when>
+				<c:otherwise>
+					<h5>등록된 게시판이 없습니다.</h3>
+				</c:otherwise>
+			</c:choose>
+		</div>
 
-        <h4 class="mt-4">게시글 목록</h4>
+
+        <div class="text-right mb-3">
+            <a href="<c:url value='/post/duo/write' />" class="btn btn-primary">글쓰기</a>
+        </div>
+
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th scope="col">닉네임</th>
-                    <th scope="col">티어</th>
-                    <th scope="col">가고자 하는 라인</th>
-                    <th scope="col">모스트픽</th>
-                    <th scope="col">상태</th>
+                    <th>닉네임</th>
+                    <th>티어</th>
+                    <th>가고자 하는 라인</th>
+                    <th>모스트픽</th>
+                    <th>상태</th>
+                    <th>관리</th>
                 </tr>
             </thead>
             <tbody>
-                <!-- 여기에 게시글 데이터 반복 -->
-                <tr>
-                    <td>멜 겅</td>
-                    <td>E4</td>
-                    <td>탑</td>
-                    <td>챔프1, 챔프2, 챔프3</td>
-                    <td>모집중</td>
-                </tr>
-                <tr>
-                    <td>박사이디</td>
-                    <td>E4</td>
-                    <td>미드</td>
-                    <td>챔프1, 챔프2, 챔프3</td>
-                    <td>모집중</td>
-                </tr>
-                <!-- 추가 데이터는 반복문을 통해 동적으로 삽입 -->
+                <c:choose>
+                    <c:when test="${not empty duoList}">
+                        <c:forEach var="duo" items="${duoList}">
+                            <tr>
+                                <td>${duo.nickname}</td>
+                                <td>${duo.tier}</td>
+                                <td>${duo.line}</td>
+                                <td>${duo.most1}, ${duo.most2}, ${duo.most3}</td>
+                                <td>
+                                    <c:choose>
+                                        <c:when test="${duo.status == 'OPEN'}">모집중</c:when>
+                                        <c:otherwise>마감</c:otherwise>
+                                    </c:choose>
+                                </td>
+                                <td>
+                                    <a href="<c:url value='/duo/detail/${duo.id}' />" class="btn btn-sm btn-info">상세보기</a>
+                                    <a href="<c:url value='/duo/edit/${duo.id}' />" class="btn btn-sm btn-warning">수정</a>
+                                    <a href="<c:url value='/duo/delete/${duo.id}' />" class="btn btn-sm btn-danger" onclick="return confirm('정말 삭제하시겠습니까?');">삭제</a>
+                                </td>
+                            </tr>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="6" class="text-center">등록된 듀오 모집 글이 없습니다.</td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>
 
-    <footer class="footer">
-        <div>© 2025 듀오 모집 게시판</div>
+    <footer class="footer mt-5 py-3 bg-light">
+        <div class="container text-center">
+            <span class="text-muted">© 2025 듀오 모집 게시판</span>
+        </div>
     </footer>
 </body>
 </html>

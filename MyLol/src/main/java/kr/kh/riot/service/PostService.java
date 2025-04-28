@@ -40,6 +40,8 @@ public interface PostService {
 
 	List<PositionVO> getDuoList();
 
+	boolean insertPosition(PositionVO positionVO);
+
 
 
 	

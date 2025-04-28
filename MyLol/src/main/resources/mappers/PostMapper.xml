@@ -112,4 +112,15 @@
 		select * from position_board
 	</select>
 	
+	
+<insert id="insertPositionBoard">
+    INSERT INTO position_board (PB_US_KEY, PB_STATE, PB_CONTENT, PB_TIME, PB_UPD)
+    VALUES (#{PB_US_KEY}, 1, #{PB_CONTENT}, now(), now())
+</insert>
+
+<insert id="insertPosition">
+    INSERT INTO position (PS_PB_KEY, PS_ORDER, PS_LINE)
+    VALUES (#{PS_PB_KEY}, #{PS_ORDER}, #{PS_LINE})
+</insert>
+
 </mapper>

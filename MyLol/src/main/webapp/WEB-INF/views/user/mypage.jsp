@@ -128,6 +128,7 @@
 		}
 
 		$(".email-send-btn").click(function () {
+			//console.log(emailCheck);
 			if(emailCheck) return;
 			
 		    const email = $("#email").val().trim();

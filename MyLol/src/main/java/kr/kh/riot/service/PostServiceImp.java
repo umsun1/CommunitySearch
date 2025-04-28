@@ -6,17 +6,18 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import kr.kh.riot.dao.PostDao;
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.model.vo.FileVO;
+import kr.kh.riot.model.vo.PositionLineVO;
 import kr.kh.riot.model.vo.PositionVO;
 import kr.kh.riot.model.vo.PostVO;
 import kr.kh.riot.model.vo.UserVO;
 import kr.kh.riot.pagination.Criteria;
 import kr.kh.riot.pagination.PageMaker;
-import kr.kh.riot.pagination.PostCriteria;
 import kr.kh.riot.utils.UploadFileUtils;
 
 @Service
@@ -111,34 +112,43 @@ public class PostServiceImp implements PostService{
 
 	@Override
 	public boolean deletePost(int po_key, UserVO user) {
-		if(user == null) {
-			return false;
-		}
-		//게시글 정보를 가져옴
-		PostVO post = postDao.selectPost(po_key);
-		//게시글의 작성자와 회원이 다르면 false 리턴
-		if(post == null || post.getPo_us_key() != user.getUs_key()) {
-			return false;
-		}
-		//게시글 수정
-		boolean res = postDao.deletePost(po_key);
-		
-		if(!res) {
-			return false;
-		}
-		//첨부파일 삭제
-		List<FileVO> fileList = postDao.selectFileList(po_key);
-		
-		if(fileList == null || fileList.size() == 0) {
-			return true;
-		}
-		
-		for(FileVO fileVo : fileList) {
-			deleteFile(fileVo);
-		}
-		//db에서 해당 첨부파일을 삭제
-		return true;
+	    if(user == null) {
+	        return false;
+	    }
+	    
+	    // 게시글 정보 가져옴
+	    PostVO post = postDao.selectPost(po_key);
+	    
+	    if(post == null) {
+	        return false;
+	    }
+	    
+	    // 관리자가 아니면 작성자 검증
+	    if(!"ADMIN".equals(user.getUs_authority())) {
+	        if(post.getPo_us_key() != user.getUs_key()) {
+	            return false;
+	        }
+	    }
+	    
+	    // 게시글 삭제
+	    boolean res = postDao.deletePost(po_key);
+	    if(!res) {
+	        return false;
+	    }
+	    
+	    // 첨부파일 삭제
+	    List<FileVO> fileList = postDao.selectFileList(po_key);
+	    if(fileList == null || fileList.isEmpty()) {
+	        return true;
+	    }
+	    
+	    for(FileVO fileVo : fileList) {
+	        deleteFile(fileVo);
+	    }
+	    
+	    return true;
 	}
+
 
 	@Override
 	public List<FileVO> getFileList(int po_key) {
@@ -223,5 +233,22 @@ public class PostServiceImp implements PostService{
 	public List<PositionVO> getDuoList() {
 		
 		return postDao.selectDuoList();
+	}
+	
+
+	@Override
+	@Transactional
+	public boolean insertPosition(PositionVO positionVO) {
+	    boolean result = postDao.insertPositionBoard(positionVO);
+	    if (!result) return false;
+	    
+	    // position_board 삽입 후, 자동으로 PB_KEY 세팅됨
+	    if (positionVO.getPositionLineList() != null) {
+	        for (PositionLineVO line : positionVO.getPositionLineList()) {
+	            line.setPS_PB_KEY(positionVO.getPB_KEY()); // 게시글 PK 설정
+	            postDao.insertPosition(line);
+	        }
+	    }
+	    return true;
 	}
 }

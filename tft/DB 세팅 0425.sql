@@ -2,10 +2,10 @@
 node "D:\git\CommunitySearch\bin\hyeonyeong\tft-server\server.js"
 */
 
--- DROP DATABASE IF EXISTS tft;
+DROP DATABASE IF EXISTS tft;
 -- CREATE DATABASE tft;
 CREATE DATABASE tft;
--- USE tft;
+USE tft;
 
 CREATE TABLE tft_players (
   id INT AUTO_INCREMENT PRIMARY KEY,

@@ -1,6 +1,7 @@
 package kr.kh.riot.controller;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.model.vo.FileVO;
+import kr.kh.riot.model.vo.PositionLineVO;
 import kr.kh.riot.model.vo.PositionVO;
 import kr.kh.riot.model.vo.PostVO;
 import kr.kh.riot.model.vo.UserVO;
@@ -178,25 +180,25 @@ public class PostController {
 	}*/
 
 	@GetMapping("/duo")
-	public String duo(Model model, PostCriteria cri, Integer num) {
-		/*
-		cri.setPerPageNum(2);
-		List<PostVO> list = postService.getPostList(cri);
+	//public String duo(Model model, PostCriteria cri, Integer num) {
+	public String duo(Model model) {
+		
+		//List<PostVO> list = postService.getPostList(cri);
 		
 		List<BoardVO> boardList = postService.getBoardList();
 		
-		PageMaker pm = postService.getPageMaker(cri);
+		//PageMaker pm = postService.getPageMaker(cri);
 		
-		int lastBoardNum = boardList.get(boardList.size()-1).getBo_key();
+		//int lastBoardNum = boardList.get(boardList.size()-1).getBo_key();
 				
-		num = num == null ? 0 : num;
+		/*num = num == null ? 0 : num;
 		if(num<0 || lastBoardNum < num) num = 0;
-		
-		model.addAttribute("postList", list);
-		model.addAttribute("boardList", boardList);
-		model.addAttribute("pm", pm);
-		model.addAttribute("boardNum", num);
 		*/
+		//model.addAttribute("postList", list);
+		model.addAttribute("boardList", boardList);
+		//model.addAttribute("pm", pm);
+		//model.addAttribute("boardNum", num);
+		
 		
 		return "/post/duo";
 	}
@@ -240,5 +242,30 @@ public class PostController {
 	    return plainText;
 	}
 	
+	
+	@PostMapping("/duo/write")
+	public String postDuoInsert(@RequestParam("PB_CONTENT") String content,
+	                             @RequestParam("PS_LINE1") String line1,
+	                             @RequestParam(value = "PS_LINE2", required = false) String line2,
+	                             HttpSession session) {
+
+	    UserVO user = (UserVO) session.getAttribute("user");
+	    if (user == null) return "redirect:/login";
+
+	    PositionVO positionVO = new PositionVO();
+	    positionVO.setPB_US_KEY(user.getUs_key());
+	    positionVO.setPB_CONTENT(content);
+
+	    List<PositionLineVO> lineList = new ArrayList<>();
+	    lineList.add(new PositionLineVO(0, 0, 1, line1)); // 1순위
+	    if (line2 != null && !line2.isEmpty()) {
+	        lineList.add(new PositionLineVO(0, 0, 2, line2)); // 2순위
+	    }
+	    positionVO.setPositionLineList(lineList);
+
+	    postService.insertPosition(positionVO);
+
+	    return "redirect:/duo/list";
+	}
 
 }
