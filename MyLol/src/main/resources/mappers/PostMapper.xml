@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.kh.riot.dao.PostDao">
+
+  
+	<select id="selectBoardList" resultType="BoardVO">
+		select * from board order by bo_key	asc
+	</select>
+	
+	<insert id="insertBoard">
+		insert into board(bo_name) values(#{bo_name})
+	</insert>
+
+	<update id="updateBoard">
+		update board set bo_name = #{board.bo_name} where bo_key = #{board.bo_key}
+	</update>
+	
+	<delete id="deleteBoard">
+		delete from board where bo_key = #{bo_key}
+	</delete>
+	
+	
+	
+	
+	
+	<insert id="insertPost" useGeneratedKeys="true" keyProperty="post.po_key">
+		insert into post(po_title, po_content, po_us_key, po_bo_key)
+		values(#{post.po_title}, #{post.po_content}, #{post.po_us_key}, #{post.po_bo_key})
+	</insert>
+	
+	<select id="selectPost" resultType="PostVO">
+		select 
+			post.*, bo_name as po_bo_name, us_name as po_us_name
+		from post
+		join board on po_bo_key = bo_key 
+		join user on us_key = po_us_key
+		where po_key = #{po_key} 
+		and PO_UPD &lt; now()
+	</select>
+	
+	<update id="deletePost">
+		update post set PO_UPD = (now() + 9999999999999) where po_key = #{po_key}
+	</update>
+	
+	<update id="updatePost">
+		update post 
+		set
+	        <if test="post.po_title != null">po_title = #{post.po_title},</if>
+	        <if test="post.po_content != null">po_content = #{post.po_content},</if>
+	        <if test="post.po_bo_key > 0">po_bo_key = #{post.po_bo_key}</if>
+	    
+		where
+			po_key = #{post.po_key}
+	</update>
+
+	<select id="selectPostList" resultType="PostVO">
+		select post.*, fi_name as po_fi_name, us_name as po_us_name from post
+		left join file on po_key = fi_po_key
+		join user on po_us_key = us_key
+		where 0 &lt; po_key
+		<if test="criteria.po_bo_key != 0">
+			and po_bo_key = #{criteria.po_bo_key}
+		</if>
+		<if test="criteria.po_type != null and criteria.po_type != 'ALL'">
+		  and po_type = #{criteria.po_type}
+		</if>
+		and po_upd &lt; now()
+		group by po_key
+		order by po_upd desc
+		limit #{criteria.pageStart}, #{criteria.perPageNum}
+		
+
+				
+	</select>
+	
+	<insert id="insertFile">
+		insert into file(fi_ori_name, fi_name, fi_po_key)
+		values(#{file.fi_ori_name},#{file.fi_name},#{file.fi_po_key})
+	</insert>
+	<select id="selectFileList" resultType="FileVO">
+		select * from file where fi_po_key = #{po_key}
+	</select>
+	<delete id="deleteFile">
+		delete from file where fi_key = #{fi_key}
+	</delete>
+	<select id="selectFile" resultType="FileVO">
+		select * from file where fi_key = #{fi_key}	
+	</select>
+
+
+	<select id="selectCountPostList" resultType="int">
+		select count(*) from post  
+		where 0 &lt; po_key
+		<if test="criteria.po_bo_key != 0">
+			and po_bo_key = #{criteria.po_bo_key}
+		</if>
+		and po_upd &lt; now() 
+	</select>
+	
+	
+	
+	<select id="selectPositions" resultType="PositionVO">
+		select * from position
+		join position_board on pb_key = ps_pb_key
+		where pb_key = #{pb_key}
+	</select>
+	
+	
+	<select id="selectDuoList" resultType="PositionVO">
+		select * from position_board
+	</select>
+	
+</mapper>

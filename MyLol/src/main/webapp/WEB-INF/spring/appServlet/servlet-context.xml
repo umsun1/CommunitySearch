@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/mvc"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc https://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
+	<context:property-placeholder location="/WEB-INF/spring/config.properties" />
+	<!-- Enables the Spring MVC @Controller programming model -->
+	<annotation-driven />
+
+	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
+	<resources mapping="/resources/**" location="/resources/" />
+	<resources mapping="/download/**" location="file:///D:/uploads/" />
+
+	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
+	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<beans:property name="prefix" value="/WEB-INF/views/" />
+		<beans:property name="suffix" value=".jsp" />
+	</beans:bean>
+	
+	<context:component-scan base-package="kr.kh.riot.*" />
+	
+	
+	<beans:bean id="tilesViewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+	    <beans:property name="viewClass" value="org.springframework.web.servlet.view.tiles3.TilesView" />
+	    <beans:property name="order" value="1" /><!-- 순서를 우선으로 지정 -->
+	</beans:bean>
+	     
+	<beans:bean id="tilesConfigurer" class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+	    <beans:property name="definitions">
+	        <beans:list>
+	            <beans:value>/WEB-INF/spring/tiles-def.xml</beans:value>
+	        </beans:list>
+	    </beans:property>
+	</beans:bean>
+		
+	<!-- 인터셉터 등록 -->
+	<beans:bean id="loginInterceptor" class="kr.kh.riot.interceptor.LoginInterceptor"/>	
+	<beans:bean id="adminInterceptor" class="kr.kh.riot.interceptor.AdminInterceptor"/>	
+	<beans:bean id="guestInterceptor" class="kr.kh.riot.interceptor.GuestInterceptor"/>	
+	<beans:bean id="autoLoginInterceptor" class="kr.kh.riot.interceptor.AutoLoginInterceptor"/>	
+	<beans:bean id="prevUrlInterceptor" class="kr.kh.riot.interceptor.PrevUrlInterceptor"/>	
+	
+	<!-- 인터셉터 맵핑 -->
+	<interceptors>
+		
+		
+		
+		<interceptor>
+			<mapping path="/**"/>	
+			<beans:ref bean="autoLoginInterceptor"/>
+		</interceptor>
+
+		<interceptor>
+			<mapping path="/user/login"/>
+			<beans:ref bean="loginInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/admin/**"/>
+			<beans:ref bean="adminInterceptor"/>
+		</interceptor>
+		
+		<interceptor>
+			<mapping path="/user/login"/>
+			<mapping path="/user/signup"/>
+			<beans:ref bean="guestInterceptor"/>
+		</interceptor>
+		<interceptor>
+			<mapping path="/user/login"/>
+			<beans:ref bean="prevUrlInterceptor"/>
+		</interceptor>
+	</interceptors>
+
+	<!-- 업로드 파일 용량 설정-->
+	<beans:bean id="multipartResolver" 
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!-- 업로드 최대 크기 10Mb -->
+		<beans:property name="maxUploadSize" value="10485760"/>
+	</beans:bean>
+	<!-- 업로드할 파일 경로 -->
+	<beans:bean id="uploadPath" class="java.lang.String">
+		<beans:constructor-arg value="${file.location}"/>
+	</beans:bean>
+	
+</beans:beans>

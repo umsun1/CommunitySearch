@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.kh.riot.dao.UserDao">
+	<insert id="insertUser">
+		insert into user(US_ID,US_PW,US_NAME,US_EMAIL,US_CREATE,US_AUTHORITY) 
+		value (#{user.us_id}, #{user.us_pw}, #{user.us_name}, #{user.us_email}, now(), "USER")
+	</insert>
+
+	<select id="selectUserBy" resultType="UserVO">
+	 	select * from User where ${type} = #{checker}
+	</select>
+
+	<update id="updateUserCookie">
+		update user set us_cookie = #{user.us_cookie}, us_limit = #{user.us_limit} where us_key = #{user.us_key}
+	</update>
+	
+	<select id="selectUserByCookie" resultType="UserVO">
+		select * from user where us_cookie = #{us_cookie} and us_limit > now()
+	</select>
+	
+	<update id="updateUser">
+		update user set US_PW = #{user.us_pw}, US_NAME = #{user.us_name}, US_EMAIL = #{user.us_email} where us_key = #{user.us_key}
+	</update>
+	
+	<select id="selectIdByEmail" resultType="String">
+		select us_id from user where us_email = #{us_email}
+	</select>
+	
+	<insert id="insertEV" useGeneratedKeys="true" keyProperty="email.ev_key">
+		insert into `email_verification` (ev_email, ev_authCode)
+		value (#{email.ev_email},#{email.ev_authCode})
+	</insert>
+	
+	<select id="selectEVCode" resultType="String">
+		select ev_authCode from email_verification where ev_key = #{ev_key}
+	</select>
+	
+	
+	
+</mapper>

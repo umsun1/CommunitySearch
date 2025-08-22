@@ -20,7 +20,7 @@ import kr.kh.riot.service.PostService;
 public class HomeController {
 	
 	@Autowired
-	private PostService postService; 
+	private PostService postService;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -30,7 +30,7 @@ public class HomeController {
 	
 	@GetMapping("/exampleTFT")
 	public String toolTFT() {
-	    return "/tool/tftTool"; 
+		return "/tool/tftTool";
 	}
 	
 
