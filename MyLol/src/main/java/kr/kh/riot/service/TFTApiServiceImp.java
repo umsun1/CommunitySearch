@@ -60,10 +60,15 @@ public class TFTApiServiceImp implements TFTApiService {
 
     //소환사 ID로 티어, 점수 가져오기
     @Override
-    public List<Map<String, Object>> getTFTLeagueInfo(String summonerId) throws Exception {
-        String url = String.format("https://kr.api.riotgames.com/tft/league/v1/entries/by-summoner/%s?api_key=%s",
-                                   summonerId, apiKey);
-        return restTemplate.getForObject(url,  List.class);
+    public List<Map<String, Object>> getTFTLeagueInfo(String puuid) throws Exception {
+        String url = String.format("https://kr.api.riotgames.com/tft/league/v1/by-puuid/%s?api_key=%s", puuid, apiKey);
+        List<Map<String, Object>> leagueEntries = restTemplate.getForObject(url,  List.class);
+        
+        System.out.println("====== Riot API TFT League Info (Raw List<Map>) ======");
+        System.out.println(leagueEntries); // ObjectMapper 없이 직접 List의 toString() 호출
+        System.out.println("======================================================");
+        
+        return leagueEntries; 
         
     }
     
