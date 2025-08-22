@@ -15,5 +15,5 @@ public interface TFTApiService {
     //PUUID로 소환사 정보 가져오기
     Map<String, Object> getSummonerByPuuid(String puuid) throws Exception;  
     //티어 & 점수 가져오기
-    List<Map<String, Object>> getTFTLeagueInfo(String summonerId) throws Exception;  
+    List<Map<String, Object>> getTFTLeagueInfo(String puuid) throws Exception;  
 }

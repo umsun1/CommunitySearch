@@ -44,26 +44,45 @@ public class TFTApiServiceImp implements TFTApiService {
     
     @Override
     public Map<String, Object> getMatchDetail(String matchId) throws Exception {
-        String url = String.format("https://asia.api.riotgames.com/tft/match/v1/matches/%s?api_key=%s",
-                                   matchId, apiKey);
+        String url = String.format("https://asia.api.riotgames.com/tft/match/v1/matches/%s?api_key=%s", matchId, apiKey);
 
         // REST API 호출 및 응답 받기
         return restTemplate.getForObject(url, Map.class);
     }
+    
     //PUUID로 소환사 정보 가져오기
     @Override
     public Map<String, Object> getSummonerByPuuid(String puuid) throws Exception {
         String url = String.format("https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-puuid/%s?api_key=%s",
                                    puuid, apiKey);
-        return restTemplate.getForObject(url, Map.class);
+        // 1.응답을 Map 객체에 담기
+        Map<String, Object> summonerData = restTemplate.getForObject(url, Map.class);
+        
+        // 2.Map 객체 내용을 콘솔에 출력 (디버깅용)
+        System.out.println("====== Riot API Summoner Data (Map) ======");
+        System.out.println(summonerData); // Map 객체는 toString()이 잘 구현되어 있어서 보기 편함
+        System.out.println("=========================================");
+
+        // 3.필요하면 Map의 특정 키-값 쌍에 접근해서 더 자세히 출력해 볼 수도 있음
+        if (summonerData != null) {
+            System.out.println("Summoner puuid (puuid): " + summonerData.get("puuid"));
+            System.out.println("Summoner profileIconId (id): " + summonerData.get("profileIconId"));
+            System.out.println("Summoner Level (summonerLevel): " + summonerData.get("summonerLevel"));
+        }
+        return summonerData;
     }
 
-    //소환사 ID로 티어, 점수 가져오기
+    //소환사 puuid로 티어, 점수 가져오기
     @Override
-    public List<Map<String, Object>> getTFTLeagueInfo(String summonerId) throws Exception {
-        String url = String.format("https://kr.api.riotgames.com/tft/league/v1/entries/by-summoner/%s?api_key=%s",
-                                   summonerId, apiKey);
-        return restTemplate.getForObject(url,  List.class);
+    public List<Map<String, Object>> getTFTLeagueInfo(String puuid) throws Exception {
+        String url = String.format("https://kr.api.riotgames.com/tft/league/v1/by-puuid/%s?api_key=%s", puuid, apiKey);
+        List<Map<String, Object>> leagueEntries = restTemplate.getForObject(url,  List.class);
+        
+        System.out.println("====== Riot API TFT League Info (Raw List<Map>) ======");
+        System.out.println(leagueEntries);
+        System.out.println("======================================================");
+        
+        return leagueEntries;
         
     }
     

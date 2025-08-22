@@ -11,6 +11,7 @@ request.setAttribute("pageType", "lol");
     <title>소환사 정보</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/TFT_Info_Styles.css">
+<<<<<<< Updated upstream:Riot/src/main/webapp/WEB-INF/views/tft/summoner.jsp
 
 </head>
 
@@ -30,12 +31,70 @@ request.setAttribute("pageType", "lol");
 		</div>
 		<button class="btn-search" type="submit">조회</button>
 	</form>
+=======
+    <style>
+	    .form-group label {
+	    	margin-right: 10px; /* 라벨과 인풋 사이의 간격 조정 */
+	    	width: 75px; /* 라벨의 고정 너비 설정 */
+		}
+		.spinner-box {
+			display: none;
+			position: fixed;
+			top: 0; left: 0; right: 0; bottom: 0;
+			background: rgba(0, 0, 0, 0.3);
+			z-index: 1000;
+			justify-content: center;
+			align-items: center;
+		}
+		body {
+		  background-image: url('https://cdn.dak.gg/tft/images2/profile/profile-bg-m.jpg'); /* 실제 이미지 경로로 교체 */
+		  background-size: cover;
+		  background-repeat: no-repeat;
+		  background-position: center center;
+		  background-attachment: fixed;
+		  
+		}
+		.white-area{
+		  color: white;
+		}
+	</style>
+</head>
+
+<body>
+	<h3 class="mt-3 white-area" style="text-align: center; margin-bottom: 35px;">🔍 TFT 전적 상세 조회</h3>
+	<div  class="white-area">
+		<p>소환사 이름을 <strong>게임이름#태그라인</strong> 형식으로 입력하세요 (예 : 바다새#KR1)</p>
+		<form id="summonerForm" class="mt-7 d-flex flex-low">
+		    <div >
+			    <div class="form-group ">
+			        <label for="gameName"><strong>게임 이름 : </strong></label>
+			        <input type="text" id="gameName" name="gameName" required>
+			    </div>
+			    <div class="form-group">
+			        <label for="tagLine"><strong>태그라인 : </strong></label>
+			        <input type="text" id="tagLine" name="tagLine" required>
+			    </div>	    
+		    </div>
+		    <div class="ml-4 mr-3">
+			    <button class="btn-search btn btn-primary" type="submit">조회</button>
+		    </div>
+		</form>
+	</div>
+>>>>>>> Stashed changes:MyLol/src/main/webapp/WEB-INF/views/tft/summoner.jsp
 	<div id="summonerProfile" style="margin-top: 20px;">
 		<!-- 소환사 정보가 여기에 표시됩니다. -->
 	</div>
 
 	<div id="gameInfo" style="margin-top: 20px;">
 		<!-- 게임 정보가 여기에 표시됩니다. -->
+	</div>
+	
+	<div class="spinner-box">
+		<div class="d-flex justify-content-center align-items-center h-100">
+			<div class="spinner-border text-light" role="status">
+				<span class="sr-only">로딩중...</span>
+			</div>
+		</div>
 	</div>
 
 	<script type="text/javascript">
@@ -44,10 +103,10 @@ request.setAttribute("pageType", "lol");
 	
 	    // 전설이와 아이템 등의 json을 미리 한 번만 불러오기
 	    Promise.all([
-	        fetch("https://ddragon.leagueoflegends.com/cdn/15.8.1/data/en_US/tft-tactician.json").then(res => res.json()),
-	        fetch("https://ddragon.leagueoflegends.com/cdn/15.8.1/data/ko_KR/tft-item.json").then(res => res.json()),
-	        fetch("https://ddragon.leagueoflegends.com/cdn/15.7.1/data/ko_KR/tft-trait.json").then(res => res.json()),
-	        fetch("https://ddragon.leagueoflegends.com/cdn/15.7.1/data/ko_KR/tft-champion.json").then(res => res.json())
+	        fetch("https://ddragon.leagueoflegends.com/cdn/15.16.1/data/en_US/tft-tactician.json").then(res => res.json()),
+	        fetch("https://ddragon.leagueoflegends.com/cdn/15.16.1/data/ko_KR/tft-item.json").then(res => res.json()),
+	        fetch("https://ddragon.leagueoflegends.com/cdn/15.16.1/data/ko_KR/tft-trait.json").then(res => res.json()),
+	        fetch("https://ddragon.leagueoflegends.com/cdn/15.16.1/data/ko_KR/tft-champion.json").then(res => res.json())
 	    ]).then(([tacticianRes, itemRes, traitRes, championRes]) => {
 	        tacticianData = tacticianRes.data;
 	        itemData = itemRes.data;
@@ -60,7 +119,8 @@ request.setAttribute("pageType", "lol");
 		    let gameName = "";
 		    let tagLine = "";
 	    	$('#summonerForm').on('submit', function (e) {
-			    $('#summonerProfile').html('');
+	    		$(".spinner-box").show();
+	    		$('#summonerProfile').html('');
 			    $('#gameInfo').html('');
 		        e.preventDefault();
 		        
@@ -75,17 +135,19 @@ request.setAttribute("pageType", "lol");
 		            data: { gameName: gameName, tagLine: tagLine },
 		            success: function (response) {
 		                const puuid = response.puuid;
-		
 		                getSummonerProfile(puuid, gameName, tagLine); // 소환사 정보
 		                getMatchInfo(puuid, start); // 경기 정보
+		                $(".spinner-box").hide();
 		            }
 		        });
 		    });
 	      	//더보기 누르면 start +10 해주고 getMatchInfo 호출
 	        $(document).on("click", ".btn-more", function () {
-	            start += 10;
+	        	$(".spinner-box").show();
+	        	start += 10;
 	            console.log(start);
 	            searchMore(start, gameName, tagLine); // 값 전달
+	            
 	        });
 	    });    
     </script>
@@ -100,7 +162,11 @@ request.setAttribute("pageType", "lol");
 	            success: function (response) {
 	                const puuid = response.puuid;
 	                getMatchInfo(puuid, start);
-	            }
+	                
+	            },
+				complete: function(){
+					$(".spinner-box").hide();
+				}
 	        });
 	    }
     </script>
@@ -115,16 +181,17 @@ request.setAttribute("pageType", "lol");
 	            method: 'GET',
 	            data: { puuid: puuid },
 	            success: function (summonerProfile) {
-	                const id = summonerProfile.id;
+	                const id = summonerProfile.puuid;
 	                const iconId = summonerProfile.profileIconId;
 	                const level = summonerProfile.summonerLevel;
-	                console.log(id);
+	                /* console.log('puuid : ' + puuid + 'iconId : ' + iconId +  'level : '+ level);*/
 
 	                $.ajax({
 	                    url: '<c:url value="/tft/getSummonerProfile"/>',
 	                    method: 'GET',
-	                    data: { puuid : puuid, summonerId: id, gameName : gameName, tagLine : tagLine},
+	                    data: { puuid : puuid, gameName : gameName, tagLine : tagLine},
 	                    success: function (summoner) {
+	                    	console.log(summoner);
 	                        $('#summonerProfile').html(summoner);
 	                    }
 	                });
@@ -177,11 +244,11 @@ request.setAttribute("pageType", "lol");
                 if (matchDetailResponse.error) {
                     $('#summonerMatchInfo').append('<p style="color: red;">경기 ID ' + matchId + ': ' + matchDetailResponse.error + '</p>');
                 } else {
-                	if (!isSet14Game(matchDetailResponse.info)) {
+                	/* if (!isSet14Game(matchDetailResponse.info)) {
                         console.log("13시즌 경기이므로 제외: " + matchId);
                         $(".btn-more").remove();
                         return;
-                    }
+                    } */
                 	
                     var matchDetailHtml = '<div class="infoBox form-control mt-3 mb-3">'
                     
@@ -191,8 +258,8 @@ request.setAttribute("pageType", "lol");
 	                   	// 입력한 유저의 정보만 표시
 	                   	if (player.puuid === puuid) {
 	              			//전설이 이미지 url
-					    	playerUrl ="https://ddragon.leagueoflegends.com/cdn/15.8.1/img/tft-tactician/" + tacticianData[player.companion.item_ID].image.full;
-					    	matchDetailHtml += '<h3>#' + player.placement + ' 경기 상세 정보</h3>'+ 
+					    	playerUrl ="https://ddragon.leagueoflegends.com/cdn/15.16.1/img/tft-tactician/" + tacticianData[player.companion.item_ID].image.full;
+					    	matchDetailHtml += '<h4>#' + player.placement + ' 경기 상세 정보</h4>'+ 
 					    						/* '<h5>경기 ID: ' + matchId + '</h5>'+ */
 						    				'<div style="display: flex; align-items: center; flex-wrap: nowrap;">'
 					    	matchDetailHtml += '<div class="legend ml-3 mt-3" style="display: flex; align-items: center; margin-right: 20px;">'+
@@ -217,7 +284,7 @@ request.setAttribute("pageType", "lol");
                                 const trait = traitData[key];
                                 traitMetaMap[key] = {
                                     name: trait.name,
-                                    icon: "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/"+ trait.image.full
+                                    icon: "https://ddragon.leagueoflegends.com/cdn/15.16.1/img/tft-trait/"+ trait.image.full
                                 };
                             }
 							//시너지
@@ -295,7 +362,7 @@ request.setAttribute("pageType", "lol");
 								  	const champName = champMeta.name;
 								  	
 								  	//const champTier = champMeta.tier;
-								  	const champImageUrl = "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-champion/" + champMeta.image.full;
+								  	const champImageUrl = "https://ddragon.leagueoflegends.com/cdn/15.16.1/img/tft-champion/" + champMeta.image.full;
 		                            	
 	                            	var borderColor; //이미지만 감싸는 div 태그에 스타일 넣기 위함
 	                            	switch (unit.rarity) {
@@ -324,7 +391,7 @@ request.setAttribute("pageType", "lol");
 	                                        const itemMeta = itemDataById[itemId];
 	                                        console.log();
 	                                        if (!itemMeta) return;
-	                                       	const itemImgUrl = "https://ddragon.leagueoflegends.com/cdn/15.8.1/img/tft-item/" + itemMeta.image.full;;
+	                                       	const itemImgUrl = "https://ddragon.leagueoflegends.com/cdn/15.16.1/img/tft-item/" + itemMeta.image.full;;
 	                                        //아이템
 	                                       	matchDetailHtml += '<div class="item-wrapper">' +
 							                                        '<img src="' + itemImgUrl + '" alt="' + itemMeta.name + '" />' +

@@ -68,6 +68,7 @@ public class TFTApiController {
         }
     }
     
+    //puuid로 소환사 정보 받아옴
     @GetMapping("/getSummonerByPuuid")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getSummonerByPuuid(@RequestParam String puuid) {
@@ -79,15 +80,15 @@ public class TFTApiController {
         }
     }
     
-    //소환사 정보 출력 막말로 puuid로 부터 시작해서 따로 둘까 생각중이기도 함.
+    //소환사 정보 출력.
     @GetMapping("/getSummonerProfile")
-    public String listPost(@RequestParam String puuid, @RequestParam String summonerId, @RequestParam String gameName, 
+    public String listPost(@RequestParam String puuid, @RequestParam String gameName, 
     		@RequestParam String tagLine, Model model) {
 		try {
 			// 서비스에서 소환사 정보 가져오기
 			Map<String, Object> summoner = tftApiService.getSummonerByPuuid(puuid);
 			// 나중에 puuid로 가져오는 api로 수정하기(결과 자체는 똑같음)
-			List<Map<String, Object>> leagueInfo = tftApiService.getTFTLeagueInfo(summonerId);
+			List<Map<String, Object>> leagueInfo = tftApiService.getTFTLeagueInfo(puuid);
 			
 			// 가져온 데이터를 JSP에 보내기
 			model.addAttribute("dto", leagueInfo.get(0)); // 첫 번째 데이터만 보낸다고 가정
