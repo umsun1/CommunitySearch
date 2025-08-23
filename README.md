@@ -1,11 +1,13 @@
 ## 각 게임 타입에 맞는 헤더 구현
 <br>
 1) TFT
+<br>
 <img width="864" height="359" alt="스크린샷 2025-08-23 214110" src="https://github.com/user-attachments/assets/8cd94ed0-cac3-450f-8eed-b80f1c2571df" />
 <br>
 
 <br>
 2) LOL
+<br>
 <img width="851" height="355" alt="스크린샷 2025-08-23 214130" src="https://github.com/user-attachments/assets/1af32e5d-1143-4cf0-b099-6d2964d7c66e" />
 <br>
 
