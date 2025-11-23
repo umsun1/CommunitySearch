@@ -112,10 +112,25 @@ request.setAttribute("pageType", "lol");
 		            method: 'GET',
 		            data: { gameName: gameName, tagLine: tagLine },
 		            success: function (response) {
+		            	//console.log(response);
 		                const puuid = response.puuid;
 		                getSummonerProfile(puuid, gameName, tagLine); // 소환사 정보
 		                getMatchInfo(puuid, start); // 경기 정보
-		                $(".spinner-box").hide();
+		            },
+		            error: function(response){
+		            	let errorMessage = '';
+		            	if (response.status === 404) {
+		                    errorMessage = '입력하신 닉네임과 태그를 가진 소환사를 찾을 수 없습니다.';
+		                } else if (response.status === 500) {
+		                    errorMessage = '🚨 Riot API 서버 또는 시스템 내부 오류가 발생했습니다. 잠시 후 다시 시도해 주세요.';
+		                } else {
+		                    // 기타 오류 (예: 400 Bad Request 등)
+		                    errorMessage = '요청 처리 중 오류가 발생했습니다. (코드: ' + response.status + ')';
+		                }
+		            	alert(errorMessage);
+		            },
+		            complete: function() {
+		                $('.spinner-box').hide();
 		            }
 		        });
 		    });
@@ -123,16 +138,15 @@ request.setAttribute("pageType", "lol");
 	        $(document).on("click", ".btn-more", function () {
 	        	$(".spinner-box").show();
 	        	start += 10;
-	            console.log(start);
+	            //console.log(start);
 	            searchMore(start, gameName, tagLine); // 값 전달
-	            
 	        });
 	    });    
     </script>
 
 	<script type="text/javascript">
 	    function searchMore(start, gameName, tagLine) {
-	        console.log(gameName);
+	        //console.log(gameName);
 	    	$.ajax({
 	            url: '<c:url value="/tft/searchPUUID"/>',
 	            method: 'GET',
@@ -152,29 +166,35 @@ request.setAttribute("pageType", "lol");
 
 	<!-- 2. 소환사 정보 출력 함수 -->
 	<script type="text/javascript">
-	    function getSummonerProfile(puuid, gameName, tagLine) {
-	        $.ajax({
-	        	async : false,
-	            url: '<c:url value="/tft/getSummonerByPuuid"/>',
-	            method: 'GET',
-	            data: { puuid: puuid },
-	            success: function (summonerProfile) {
-	                const id = summonerProfile.puuid;
-	                const iconId = summonerProfile.profileIconId;
-	                const level = summonerProfile.summonerLevel;
-	                /* console.log('puuid : ' + puuid + 'iconId : ' + iconId +  'level : '+ level);*/
-
-	                $.ajax({
-	                    url: '<c:url value="/tft/getSummonerProfile"/>',
-	                    method: 'GET',
-	                    data: { puuid : puuid, gameName : gameName, tagLine : tagLine},
-	                    success: function (summoner) {
-	                    	console.log(summoner);
-	                        $('#summonerProfile').html(summoner);
-	                    }
-	                });
-	            }
-	        });
+		    function getSummonerProfile(puuid, gameName, tagLine) {
+		        $.ajax({
+		        	//async : false,
+		            url: '<c:url value="/tft/getSummonerByPuuid"/>',
+		            method: 'GET',
+		            data: { puuid: puuid },
+		            success: function (summonerProfile) {
+		                const id = summonerProfile.puuid;
+		                const iconId = summonerProfile.profileIconId;
+		                const level = summonerProfile.summonerLevel;
+		                //console.log('puuid : ' + puuid + 'iconId : ' + iconId +  'level : '+ level);
+	
+		                $.ajax({
+		                    url: '<c:url value="/tft/getSummonerProfile"/>',
+		                    method: 'GET',
+		                    data: {
+		                    	iconId : iconId,
+		                    	level : level,
+		                    	puuid : puuid,
+		                    	gameName : gameName,
+		                    	tagLine : tagLine
+		                    	},
+		                    success: function (summoner) {
+		                    	console.log(summoner);
+		                        $('#summonerProfile').html(summoner);
+		                    }
+		                });
+		            }
+		        });
 	    }
     </script>
 
@@ -182,14 +202,14 @@ request.setAttribute("pageType", "lol");
    		 // TFT 경기 ID 요청
     	function getMatchInfo(puuid, start) {	 	    
    			$.ajax({
-		    	async : false,
+		    	//async : false,
 		        url: '<c:url value="/tft/recentTftMatchIds"/>',
 		        method: 'GET',
 		        data: { puuid: puuid, start : start },
 		        success: function(matchIds) {
 		            if (matchIds.length > 0) {
 		                // 경기 정보를 순차적으로 가져오기
-		                console.log(matchIds);
+		                //console.log(matchIds);
 		                fetchMatchDetails(matchIds, 0, puuid);
 		            } else {
 		                $('#summonerMatchInfo').append('<p>최근 경기 데이터가 없습니다.</p>');
@@ -214,7 +234,7 @@ request.setAttribute("pageType", "lol");
 
         var matchId = matchIds[index];
         $.ajax({
-        	async : false,
+        	//async : false,
             url: '<c:url value="/tft/matchDetail"/>',
             method: 'GET',
             data: { matchId: matchId },
@@ -227,10 +247,8 @@ request.setAttribute("pageType", "lol");
                         $(".btn-more").remove();
                         return;
                     } */
-                	
-                    var matchDetailHtml = '<div class="infoBox form-control mt-3 mb-3">'
-                    
-                    ;
+
+                    var matchDetailHtml = '<div class="infoBox form-control mt-3 mb-3">';
                     matchDetailResponse.info.participants.forEach(function(player) {
                         
 	                   	// 입력한 유저의 정보만 표시
@@ -332,7 +350,11 @@ request.setAttribute("pageType", "lol");
                                 player.units.forEach(function(unit) {
 	                            	// 소환수는 0 코스트 취급. 테두리는 1코스트처럼 두기.
 	                            	if (unit.character_id.startsWith("TFT14_Summon")){unit.rarity = 0;}
-
+										
+	                            	//
+	                            	if (unit.character_id === ("tft15_leesin")) {
+	                            	    unit.character_id = "TFT15_LeeSin";
+	                            	}
 								  	// championMetaMap에서 유닛 데이터 찾기
 								  	const champMeta = championMetaMap[unit.character_id];
 								  	if (!champMeta) {return;} // 매칭 안 되면 스킵
@@ -341,7 +363,6 @@ request.setAttribute("pageType", "lol");
 								  	
 								  	//const champTier = champMeta.tier;
 								  	const champImageUrl = "https://ddragon.leagueoflegends.com/cdn/15.16.1/img/tft-champion/" + champMeta.image.full;
-		                            	
 	                            	var borderColor; //이미지만 감싸는 div 태그에 스타일 넣기 위함
 	                            	switch (unit.rarity) {
 	                                    case 0: borderColor = 'gray'; break;

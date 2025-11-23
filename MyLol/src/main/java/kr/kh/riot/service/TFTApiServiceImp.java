@@ -8,6 +8,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import kr.kh.riot.model.dto.RiotAccountDTO;
+import kr.kh.riot.model.dto.RiotSummonerDTO;
+import kr.kh.riot.model.dto.SummonerProfileDTO;
+
 @Service
 public class TFTApiServiceImp implements TFTApiService {
 	
@@ -24,13 +28,22 @@ public class TFTApiServiceImp implements TFTApiService {
     TFTApiService riotApiService;
 
     @Override
-    public Map<String, Object> getSummonerByRiotId(String gameName, String tagLine) throws Exception {
+    public RiotAccountDTO getSummonerByRiotId(String gameName, String tagLine) throws Exception {
         String url = String.format("https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s?api_key=%s",
                                    gameName, tagLine, apiKey);
 
         // REST API 호출 및 응답 받기
-        return restTemplate.getForObject(url, Map.class);
+        return restTemplate.getForObject(url, RiotAccountDTO.class);
     }
+    
+//    @Override
+//    public Map<String, Object> getSummonerByRiotId(String gameName, String tagLine) throws Exception {
+//        String url = String.format("https://asia.api.riotgames.com/riot/account/v1/accounts/by-riot-id/%s/%s?api_key=%s",
+//                                   gameName, tagLine, apiKey);
+//
+//        // REST API 호출 및 응답 받기
+//        return restTemplate.getForObject(url, Map.class);
+//    }
 
     @Override
     public List<String> getRecentTftMatchIds(String puuid, int start) throws Exception {
@@ -52,17 +65,17 @@ public class TFTApiServiceImp implements TFTApiService {
     }
     //PUUID로 소환사 정보 가져오기
     @Override
-    public Map<String, Object> getSummonerByPuuid(String puuid) throws Exception {
-        String url = String.format("https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-puuid/%s?api_key=%s",
+    public RiotSummonerDTO getSummonerByPuuid(String puuid) throws Exception {
+    	String url = String.format("https://kr.api.riotgames.com/tft/summoner/v1/summoners/by-puuid/%s?api_key=%s",
                                    puuid, apiKey);
-        return restTemplate.getForObject(url, Map.class);
+        return restTemplate.getForObject(url, RiotSummonerDTO.class);
     }
 
     //소환사 ID로 티어, 점수 가져오기
     @Override
-    public List<Map<String, Object>> getTFTLeagueInfo(String puuid) throws Exception {
+    public List<SummonerProfileDTO> getTFTLeagueInfo(String puuid) throws Exception {
         String url = String.format("https://kr.api.riotgames.com/tft/league/v1/by-puuid/%s?api_key=%s", puuid, apiKey);
-        List<Map<String, Object>> leagueEntries = restTemplate.getForObject(url,  List.class);
+        List<SummonerProfileDTO> leagueEntries = restTemplate.getForObject(url,  List.class);
         
         System.out.println("====== Riot API TFT League Info (Raw List<Map>) ======");
         System.out.println(leagueEntries); // ObjectMapper 없이 직접 List의 toString() 호출

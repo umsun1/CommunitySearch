@@ -8,7 +8,7 @@
       { "tier": 3, "minUnits": 7, "style": 4 },
       { "tier": 4, "minUnits": 10, "style": 5 }
     ],
-    "image": { "full": "Trait_Icon_14_StreetDemon.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_StreetDemon.TFT_Set14.png"
   },
   {
     "id": "TFT14_Overlord",
@@ -16,7 +16,7 @@
     "tiers" : [
       	{"tier":1 , "minUnits": 1, "style": 3 }
     ],
-    "image": { "full": "Trait_Icon_14_Overlord.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Overlord.TFT_Set14.png"
   },
   {
     "id": "TFT14_Netgod",
@@ -24,7 +24,7 @@
     "tiers" : [
       	{"tier":1 , "minUnits": 1, "style": 3 }
     ],
-    "image": { "full": "Trait_Icon_14_GodoftheNet.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_GodoftheNet.TFT_Set14.png"
   },
   {
     "id": "TFT14_HotRod",
@@ -33,7 +33,7 @@
       	{"tier":1 , "minUnits": 3, "style": 1 },
       	{"tier":2 , "minUnits": 4, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_NitroForge.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_NitroForge.TFT_Set14.png"
   },
   {
     "id": "TFT14_AnimaSquad",
@@ -44,7 +44,7 @@
       	{ "tier": 3, "minUnits": 7, "style": 4 },
       	{ "tier": 4, "minUnits": 10, "style": 5 }
     ],
-    "image": { "full": "Trait_Icon_14_AnimaSquad.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_AnimaSquad.TFT_Set14.png"
   },
   {
     "id": "TFT14_Virus",
@@ -52,7 +52,7 @@
     "tiers" : [
       	{"tier":1 , "minUnits": 1, "style": 3 }
     ],
-    "image": { "full": "Trait_Icon_14_Virus.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Virus.TFT_Set14.png"
   },
   {
     "id": "TFT14_Mob",
@@ -62,7 +62,7 @@
       	{"tier":2 , "minUnits": 5, "style": 2 },
       	{"tier":3 , "minUnits": 7, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Mob.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Mob.TFT_Set14.png"
   },
   {
     "id": "TFT14_Cyberboss",
@@ -72,7 +72,7 @@
       	{ "tier": 2, "minUnits": 3, "style": 2 },
       	{ "tier": 3, "minUnits": 4, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Cyberbosses.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Cyberbosses.TFT_Set14.png"
   },
   {
     "id": "TFT14_Suits",
@@ -82,7 +82,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 5, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Cypher.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Cypher.TFT_Set14.png"
   },
   {
     "id": "TFT14_Divinicorp",
@@ -92,7 +92,7 @@
       	{"tier":2 , "minUnits": 2, "style": 2 },
       	{"tier":3 , "minUnits": 5, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Divinicorp.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Divinicorp.TFT_Set14.png"
   },
   {
     "id": "TFT14_EdgeRunner",
@@ -103,7 +103,7 @@
       	{"tier":3 , "minUnits": 7, "style": 4 },
       	{"tier":4 , "minUnits": 10, "style": 5 }
     ],
-    "image": { "full": "Trait_Icon_14_Exotech.TFT_Set14.png" }
+    "image":"https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Exotech.TFT_Set14.png"
   },
   {
     "id": "TFT14_ViegoUniqueTrait",
@@ -111,7 +111,7 @@
     "tiers" : [
       	{"tier":1 , "minUnits": 1, "style": 3 }
     ],
-    "image": { "full": "Trait_Icon_14_SoulKiller.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_SoulKiller.TFT_Set14.png"
   },
   {
     "id": "TFT14_BallisTek",
@@ -121,7 +121,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_BoomBots.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_BoomBots.TFT_Set14.png"
   },
   {
     "id": "TFT14_Immortal",
@@ -131,7 +131,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_GoldenOx.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_GoldenOx.TFT_Set14.png"
   },
   {
     "id": "TFT14_Techie",
@@ -141,7 +141,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Techie.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Techie.TFT_Set14.png"
   },
   {
     "id": "TFT14_Bruiser",
@@ -151,7 +151,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Bruiser.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Bruiser.TFT_Set14.png"
   },
   {
     "id": "TFT14_Thirsty",
@@ -161,7 +161,7 @@
       	{"tier":2 , "minUnits": 3, "style": 2 },
       	{"tier":3 , "minUnits": 4, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Dynamo.TFT_Set14.png"}
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Dynamo.TFT_Set14.png"
   },
   {
     "id": "TFT14_Marksman",
@@ -171,7 +171,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Marksman.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Marksman.TFT_Set14.png"
   },
   {
     "id": "TFT14_Vanguard",
@@ -181,7 +181,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_12_Vanguard.TFT_Set12.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_12_Vanguard.TFT_Set12.png"
   },
   {
     "id": "TFT14_Swift",
@@ -191,7 +191,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_10_Rapidfire.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_10_Rapidfire.png"
   },
   {
     "id": "TFT14_Armorclad",
@@ -201,7 +201,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_9_Bastion.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_9_Bastion.png"
   },
   {
     "id": "TFT14_Supercharge",
@@ -209,9 +209,9 @@
     "tiers" : [
 		{"tier":1 , "minUnits": 2, "style": 1 },
       	{"tier":2 , "minUnits": 3, "style": 2 },
-      	{"tier":3 , "minUnits": 5, "style": 4 }
+      	{"tier":3 , "minUnits": 4, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_14_Amp.TFT_Set14.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_14_Amp.TFT_Set14.png"
   },
   {
     "id": "TFT14_Controller",
@@ -221,7 +221,7 @@
       	{"tier":2 , "minUnits": 3, "style": 2 },
       	{"tier":3 , "minUnits": 5, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_9_Strategist.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_9_Strategist.png"
   },
   {
     "id": "TFT14_Cutter",
@@ -231,7 +231,7 @@
       	{"tier":2 , "minUnits": 3, "style": 2 },
       	{"tier":3 , "minUnits": 5, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_4_Executioner.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_4_Executioner.png"
   },
   {
     "id": "TFT14_Strong",
@@ -241,7 +241,7 @@
       	{"tier":2 , "minUnits": 4, "style": 2 },
       	{"tier":3 , "minUnits": 6, "style": 4 }
     ],
-    "image": { "full": "Trait_Icon_4_Slayer.png" }
+    "image": "https://ddragon.leagueoflegends.com/cdn/15.7.1/img/tft-trait/Trait_Icon_4_Slayer.png"
   }
 ]
  

@@ -13,7 +13,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.HttpClientErrorException;
 
+import kr.kh.riot.model.dto.RiotAccountDTO;
+import kr.kh.riot.model.dto.RiotSummonerDTO;
+import kr.kh.riot.model.dto.SummonerProfileDTO;
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.service.PostService;
 import kr.kh.riot.service.TFTApiService;
@@ -43,13 +47,31 @@ public class TFTApiController {
     // AJAX 요청을 처리하는 /searchPUUID 엔드포인트
     @GetMapping("/searchPUUID")
     @ResponseBody
-    public Map<String, Object> searchSummoner(@RequestParam String gameName, @RequestParam String tagLine) {
+    public ResponseEntity<RiotAccountDTO> searchSummoner(@RequestParam String gameName, @RequestParam String tagLine) {
         try {
-            return tftApiService.getSummonerByRiotId(gameName, tagLine);
+        	RiotAccountDTO accountInfo = tftApiService.getSummonerByRiotId(gameName, tagLine);
+        	//성공적으로 데이터 가져오면 200 OK 상태 코드와 함께 DTO 객체를 반환.
+        	return ResponseEntity.ok(accountInfo);
+        } catch (HttpClientErrorException.NotFound e) {
+            //Riot API에서 소환사를 못 찾았을 때 404 상태 코드만 반환.
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
+            
         } catch (Exception e) {
-            return Collections.singletonMap("error", "소환사 정보를 가져오는 중 오류가 발생했습니다.");
+            //서버 내부 오류 : 500 상태 코드만 반환.
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+    
+// // AJAX 요청을 처리하는 /searchPUUID 엔드포인트
+//    @GetMapping("/searchPUUID")
+//    @ResponseBody
+//    public Map<String, Object> searchSummoner(@RequestParam String gameName, @RequestParam String tagLine) {
+//        try {
+//            return tftApiService.getSummonerByRiotId(gameName, tagLine);
+//        } catch (Exception e) {
+//            return Collections.singletonMap("error", "소환사 정보를 가져오는 중 오류가 발생했습니다.");
+//        }
+//    }
 
     // PUUID로 TFT 경기 ID 가져오기
     @GetMapping("/recentTftMatchIds")
@@ -75,9 +97,9 @@ public class TFTApiController {
     
     @GetMapping("/getSummonerByPuuid")
     @ResponseBody
-    public ResponseEntity<Map<String, Object>> getSummonerByPuuid(@RequestParam String puuid) {
+    public ResponseEntity<RiotSummonerDTO> getSummonerByPuuid(@RequestParam String puuid) {
         try {
-            Map<String, Object> summoner = tftApiService.getSummonerByPuuid(puuid);
+        	RiotSummonerDTO summoner = tftApiService.getSummonerByPuuid(puuid);
             return ResponseEntity.ok(summoner);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -86,19 +108,19 @@ public class TFTApiController {
     
     //소환사 정보 출력 막말로 puuid로 부터 시작해서 따로 둘까 생각중이기도 함.
     @GetMapping("/getSummonerProfile")
-    public String listPost(@RequestParam String puuid, @RequestParam String gameName, 
+    public String listPost(@RequestParam int iconId, @RequestParam long level, @RequestParam String puuid, @RequestParam String gameName, 
     		@RequestParam String tagLine, Model model) {
 		try {
-			// 서비스에서 소환사 정보 가져오기
-			Map<String, Object> summoner = tftApiService.getSummonerByPuuid(puuid);
 			// 나중에 puuid로 가져오는 api로 수정하기(결과 자체는 똑같음)
-			List<Map<String, Object>> leagueInfo = tftApiService.getTFTLeagueInfo(puuid);
+			List<SummonerProfileDTO> leagueInfo = tftApiService.getTFTLeagueInfo(puuid);
 			
 			// 가져온 데이터를 JSP에 보내기
 			model.addAttribute("dto", leagueInfo.get(0)); // 첫 번째 데이터만 보낸다고 가정
 			model.addAttribute("gameName", gameName);
 			model.addAttribute("tagLine", tagLine);
-			model.addAttribute("summoner", summoner);
+			model.addAttribute("iconId", iconId);
+			model.addAttribute("level", level);
+
 		} catch (Exception e) {	
 			e.printStackTrace();
 		}

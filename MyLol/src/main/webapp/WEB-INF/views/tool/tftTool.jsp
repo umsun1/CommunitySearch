@@ -37,7 +37,7 @@
 			<h5>챔피언 시너지</h5>
 			<button id="toggle-synergy" class="btn btn-sm btn-outline-danger">−</button>
 		</div>
-		<ul id="synergy-list"></ul>
+		<ul id="synergy-list" style="margin-right: 10px; margin-left: -5px"></ul>
 	</div>
 
 	<div class="text-center mt-3">
@@ -53,7 +53,8 @@
     const toggleBtn = document.getElementById("toggle-theme");
     const body = document.body;
     let dragged = null;
-    let championData = {};
+    let championData = {}; //유닛 데이터를 저장할 전역 맵
+    let traitDataMap = {}; //시너지 데이터를 저장할 전역 맵
 	
 
     const synergyData = {
@@ -142,6 +143,12 @@
     	console.log(unitData);
     	console.log(traitData);
     	
+    	// traitDataMap에 시너지 이름(name)을 키로 하여 데이터 저장
+    	traitData.forEach(trait => {
+    		const cleanedTraitName = trait.name.trim(); 
+            traitDataMap[cleanedTraitName] = trait;
+        });
+    	
     	unitData.forEach((champ, index) => {
           championData[champ.id] = champ;
 		  
@@ -200,19 +207,22 @@
    
     //클리어버튼
     function clearBoard() {
-      document.querySelectorAll(".cell").forEach(cell => {
+		document.querySelectorAll(".cell").forEach(cell => {
         cell.innerHTML = "";
       });
       synergy();
     }
     
 	//시너지 활성 등급 계산 함수
-    function getActiveStyle(traitData, unitCount) {
-  	  if (!traitData || !traitData.tiers) return 0;
-  	  const activeTier = traitData.tiers
-  	    .filter(tier => unitCount >= tier.minUnits)
-  	    .sort((a, b) => b.tier - a.tier)[0];
-  	  return activeTier ? activeTier.style : 0;
+	function getActiveStyle(traitData, unitCount) {
+		if (!traitData || !traitData.tiers) return 0;
+  	  
+  		let activeStyle = 0;
+  	  
+  	  	const activeTier = traitData.tiers
+  	    	.filter(tier => unitCount >= tier.minUnits)
+  	    	.sort((a, b) => b.tier - a.tier)[0];
+  	  	return activeTier ? activeTier.style : 0;
   	}
 	// 시너지 아이콘과 등급(스타일)별 배경 이미지 매핑 준비
    	const styleBgMap = {
@@ -223,53 +233,123 @@
 	  5: "https://cdn.dak.gg/tft/images2/tft/traits/background/chromatic.svg"
 	};
     
-    //시너지 계산
-    function synergy() {
-    	
-      const synergyList = document.getElementById("synergy-list");
-      synergyList.innerHTML = "";
-
-      const champs = new Set();
-      const champCount = {};
-      const synergyCount = {};
-
-      // 올라간 챔피언 등록
-      document.querySelectorAll(".cell").forEach(cell => {
-        const champImg = cell.querySelector("img");
-        if (!champImg) return;
-        const champName = champImg.getAttribute("name");
-        if (champs.has(champName)) return; // 중복 체크
-        champs.add(champName);
-
-        const champ = Object.values(championData).find(c => c.name === champName);
-        if (!champ) return;
-        champ.traits.forEach(trait => {
-        	champCount[trait] = (champCount[trait] || 0) + 1;
-        });
-      });
-
-  
-      Object.entries(champCount)
-        .sort((a, b) => b[1] - a[1]) 
-        .sort()
-        .forEach(([trait, count]) => {
-          const li = document.createElement("li");
-
-          const name = document.createElement("div");
-          name.textContent = `\${trait} \${count}`;
-          name.style.fontWeight = "bold";
-
-          const desc = document.createElement("div");
-          desc.textContent = synergyData[trait]?.description || "";
-          desc.style.fontSize = "12px";
-          desc.style.opacity = "0.75";
-          desc.style.marginLeft = "5px";
-
-          li.appendChild(name);
-          li.appendChild(desc);
-          synergyList.appendChild(li);
-        });
-    }
+	//시너지 계산
+	function synergy() {
+		
+		const isLightTheme = body.classList.contains('light-theme');
+		if (isLightTheme) {
+		    icon.style.filter = "invert(100%)";
+		}
+		
+		const synergyList = document.getElementById("synergy-list");
+		synergyList.innerHTML = "";
+	
+		const champs = new Set();
+		const champCount = {};
+		const synergyCount = {};
+	
+      	// 올라간 챔피언 등록
+		document.querySelectorAll(".cell").forEach(cell => {
+			const champImg = cell.querySelector("img");
+			if (!champImg) return;
+			const champName = champImg.getAttribute("name");
+			if (champs.has(champName)) return; // 중복 체크
+			champs.add(champName);
+			
+			const champ = Object.values(championData).find(c => c.name === champName);
+			if (!champ) return;
+			champ.traits.forEach(trait => {
+				// 공백 제거된 시너지 이름을 키로 사용
+				const cleanedTrait = trait.trim(); 
+				if (cleanedTrait) { 
+					champCount[cleanedTrait] = (champCount[cleanedTrait] || 0) + 1;
+				}
+			});
+		});
+	
+		Object.entries(champCount)
+	    .sort(([traitA, countA], [traitB, countB]) => {
+		    // 1. 카운트가 다르면 카운트 기준으로 내림차순 정렬
+		    if (countB !== countA) {
+		        return countB - countA;
+		    }
+		    // 2. 카운트가 같으면 이름 기준으로 오름차순 정렬
+		    return traitA.localeCompare(traitB);
+		})
+	 	.forEach(([trait, count]) => {
+	
+			const li = document.createElement("li");
+			li.style.marginLeft = '-1rem';
+			
+			const traitData = traitDataMap[trait];
+			const activeStyle = getActiveStyle(traitData, count);
+			const styleBg = styleBgMap[activeStyle] || ""; 
+	
+	        li.style.display = "flex"; 
+	        li.style.listStyle = "none";
+	        li.style.paddingLeft = "0px";
+	        li.classList.add("synergy-item");
+	        
+	        
+			// ⭐️ 새 코드: 아이콘을 감싸는 래퍼 DIV 생성
+			const iconWrapper = document.createElement("div");
+			iconWrapper.style.width = "30px";
+		    iconWrapper.style.height = "30px";
+		    iconWrapper.style.display = "flex";
+		    iconWrapper.style.alignItems = "center";
+		    iconWrapper.style.justifyContent = "center";
+		    iconWrapper.style.marginRight = "7px";
+	        
+	        // 배경 이미지 적용 (li가 아닌 iconWrapper에 적용)
+	        if (activeStyle > 0) {
+	        	iconWrapper.style.backgroundImage = "url(" + styleBg + ")";
+	            iconWrapper.style.backgroundSize = "cover";
+	            iconWrapper.style.backgroundRepeat = "no-repeat";
+	            iconWrapper.style.backgroundPosition = "center";
+	            
+	        }
+	        
+	        const icon = document.createElement("img"); //  아이콘 이미지 요소 생성
+	        icon.style.width = "20px";
+   			icon.style.height = "20px";
+   			
+			icon.src = traitData ? traitData.image : ""; //  시너지 이미지 URL 설정
+	        icon.alt = trait;
+	        icon.classList.add("synergy-icon");
+	        
+			
+	
+	        // ⭐️ 새 코드: 아이콘을 래퍼 안에 추가
+	        iconWrapper.appendChild(icon);
+	
+	        const nameContainer = document.createElement("div"); // 이름과 카운트를 담을 컨테이너
+	        nameContainer.classList.add("synergy-name-count");
+	
+	        const name = document.createElement("span"); 
+	        name.textContent = trait;
+	        name.style.fontWeight = "bold";
+	        name.style.marginLeft = "7px";
+	        name.style.marginRight = "7px";
+	
+	        const countSpan = document.createElement("span"); // 카운트를 담을 요소
+	        countSpan.textContent = count;
+	        countSpan.style.fontWeight = "bold";
+	        countSpan.classList.add("synergy-count");
+	
+	        nameContainer.appendChild(name);
+	        nameContainer.appendChild(countSpan);
+	
+	
+	        const desc = document.createElement("div");
+	        desc.style.fontSize = "12px";
+	        desc.style.opacity = "0.75";
+	        desc.style.marginLeft = "5px";
+	
+	        li.appendChild(iconWrapper); // ⭐️ 새 코드: 래퍼를 li에 추가
+	        li.appendChild(nameContainer); // 이름과 카운트 컨테이너 추가
+	        synergyList.appendChild(li);
+	      });
+	}
 
     $("#clear-btn").click(() => {
       $(".cell").html("");
