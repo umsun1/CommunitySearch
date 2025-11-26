@@ -20,8 +20,8 @@ Riot Games API를 연동하여 League of Legends와 Teamfight Tactics(TFT)의 �
 <img src="https://img.shields.io/badge/riotgames-EB0029?style=for-the-badge&logo=riotgames&logoColor=white">
 
 ## 전적 페이지
-<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/4a07c9d1-9c6c-4fca-9ea3-b5e65e8f103d" />
-<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/fecc9209-f28b-4ba4-a946-e38d9f56595d" />
+<img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/4a07c9d1-9c6c-4fca-9ea3-b5e65e8f103d" />
+<img width="400" height="300" alt="image" src="https://github.com/user-attachments/assets/fecc9209-f28b-4ba4-a946-e38d9f56595d" />
 
 
 
