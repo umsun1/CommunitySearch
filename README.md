@@ -1,15 +1,34 @@
-## 각 게임 타입에 맞는 헤더 구현
-<br>
-1) TFT
-<br>
-<img width="864" height="359" alt="스크린샷 2025-08-23 214110" src="https://github.com/user-attachments/assets/8cd94ed0-cac3-450f-8eed-b80f1c2571df" />
-<br>
+## RIOT.KH : 게임 전적 플랫폼
+Riot Games API를 연동하여 League of Legends와 Teamfight Tactics(TFT)의 사용자 전적을 조회하고, TFT의 시너지 배치를 실시간으로 시뮬레이션할 수 있도록 개발한 웹 서비스입니다. 사용자 경험(UX) 개선과 프론트엔드 성능 최적화에 집중하여 개발했습니다.
 
-<br>
-2) LOL
-<br>
-<img width="851" height="355" alt="스크린샷 2025-08-23 214130" src="https://github.com/user-attachments/assets/1af32e5d-1143-4cf0-b099-6d2964d7c66e" />
-<br>
+## 프로젝트 개요
+개발 기간 : 2025.03.24 ~ 2025.04.25
+
+## 기술 스택
+`Front-end` 
+<img  alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white">
+<img alt="CSS3" src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=CSS3&logoColor=white">
+<img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=JavaScript&logoColor=black">
+<img alt="jQuery" src="https://img.shields.io/badge/jquery-0769AD?style=for-the-badge&logo=jquery&logoColor=white">
+<br><br>
+`Back-end`
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=OpenJDK&logoColor=white">
+<img src="https://img.shields.io/badge/Spring-6DB33F?style=for-the-badge&logo=Spring&logoColor=white">
+<img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
+<br><br>
+`API`
+<img src="https://img.shields.io/badge/riotgames-EB0029?style=for-the-badge&logo=riotgames&logoColor=white">
+
+## 전적 페이지
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/4a07c9d1-9c6c-4fca-9ea3-b5e65e8f103d" />
+<img width="500" height="400" alt="image" src="https://github.com/user-attachments/assets/fecc9209-f28b-4ba4-a946-e38d9f56595d" />
+
+
+
+
+## TFT 배치툴
+
+
 
 ## 실행화면
 1. ✅ 닉네임과 태그 입력받기
@@ -34,10 +53,3 @@
 5. ✅ 유닛, 아이템, 시너지 아이콘에 마우스 호버시 이름 추가
 6. ✅ 더보기 버튼 클릭시 API 전적 추가 불러오기
 
-<br>
-
-<img width="1096" height="871" alt="스크린샷 2025-08-22 223534" src="https://github.com/user-attachments/assets/f8d45b83-ec03-45ec-9859-08dd31ae0cf0" />
-
-<br><hr>
-
-<img width="1420" height="558" alt="스크린샷 2025-08-22 224459" src="https://github.com/user-attachments/assets/46f55990-1e59-49f2-a8ce-7e92190d3958" />
