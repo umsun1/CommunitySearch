@@ -66,7 +66,7 @@ public class LOLApiServiceImp implements LOLApiService {
     @Override
     public List<Map<String, Object>> getLOLLeagueInfo(String summonerId) throws Exception {
         String url = String.format(
-            "https://kr.api.riotgames.com/lol/league/v4/entries/by-summoner/%s?api_key=%s",
+            "https://kr.api.riotgames.com/lol/league/v4/entries/by-puuid/%s?api_key=%s",
             summonerId, apiKey
         );
         System.out.println(url);

@@ -8,6 +8,9 @@
     <meta charset="UTF-8" />
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 	<style>
+		.white-container * { 
+		  background-color: white;
+		}
 		.infoBox{
 			min-height: auto; height: auto; 
 			background-color: #f8f9fa; 
@@ -118,7 +121,9 @@
     <br>
     <!-- 하단 테이블 (최근 경기 상세) -->
     <div class="matches-table-container">
-        <h2>최근 경기 정보</h2>
+    <div class="white-container">
+    
+        <!-- <h2>최근 경기 정보</h2> -->
 		<table class="table table-striped table-hover match-table">
         <!-- <table class="match-table"> -->
             <thead>
@@ -210,6 +215,7 @@
 				</c:forEach>
 			</tbody>
         </table>
+    </div>
     </div>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.kh.riot.model.dto.MatchDTO;
 import kr.kh.riot.model.dto.SummonerDTO;
+import kr.kh.riot.model.dto.SummonerProfileDTO;
 import kr.kh.riot.model.vo.BoardVO;
 import kr.kh.riot.service.LOLApiService;
 import kr.kh.riot.service.PostService;
@@ -65,20 +66,21 @@ public class LOLApiController {
         }
     }
     
-    //소환사 정보 출력 막말로 puuid로 부터 시작해서 따로 둘까 생각중이기도 함.
+    //summonerId는 생략함
     @GetMapping("/getSummonerProfile")
-    public String listPost(@RequestParam String puuid, @RequestParam String summonerId, @RequestParam String gameName, 
+    public String listPost(@RequestParam String puuid, @RequestParam String gameName, 
     		@RequestParam String tagLine, Model model) {
 		try {
 			System.out.println(puuid);
-			System.out.println(summonerId);
+//			System.out.println(summonerId);
 			System.out.println(gameName + '#' + tagLine);
 			model.addAttribute("gameName", gameName);
 			model.addAttribute("tagLine", tagLine);
 			// 서비스에서 소환사 정보 가져오기
 			Map<String, Object> summoner = lolApiService.getSummonerByPuuid(puuid);
 			model.addAttribute("summoner", summoner);
-			List<Map<String, Object>> leagueInfo = lolApiService.getLOLLeagueInfo(summonerId);
+//			List<Map<String, Object>> leagueInfo = lolApiService.getLOLLeagueInfo(summonerId);
+			List<Map<String, Object>> leagueInfo = lolApiService.getLOLLeagueInfo(puuid);
 			System.out.println(summoner);
 			System.out.println(leagueInfo);
 			// 가져온 데이터를 JSP에 보내기

@@ -115,16 +115,17 @@ request.setAttribute("pageType", "lol");
 	            method: 'GET',
 	            data: { puuid: puuid },
 	            success: function (summonerProfile) {
-	                const id = summonerProfile.id;
+	                /* const id = summonerProfile.id; id는 없었음*/
 	                const iconId = summonerProfile.profileIconId;
 	                const level = summonerProfile.summonerLevel;
 	                console.log(puuid);
-	                console.log(id);
+	                /* console.log(id); */
 
 	                $.ajax({
 	                    url: '<c:url value="/lol/getSummonerProfile"/>',
 	                    method: 'GET',
-	                    data: { puuid : puuid, summonerId: id, gameName : gameName, tagLine : tagLine},
+	                    /* data: { puuid : puuid, summonerId: id, gameName : gameName, tagLine : tagLine}, */
+	                    data: { puuid : puuid, gameName : gameName, tagLine : tagLine},
 	                    success: function (summoner) {
 	                        $('#summonerProfile').html(summoner);
 	                    }

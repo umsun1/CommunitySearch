@@ -269,11 +269,22 @@
 	
 		Object.entries(champCount)
 	    .sort(([traitA, countA], [traitB, countB]) => {
-		    // 1. 카운트가 다르면 카운트 기준으로 내림차순 정렬
+	        // 1. 등급(activeStyle) 계산 (정렬을 위해 임시로 계산)
+	        const traitDataA = traitDataMap[traitA];
+	        const traitDataB = traitDataMap[traitB];
+	        const styleA = getActiveStyle(traitDataA, countA);
+	        const styleB = getActiveStyle(traitDataB, countB);
+	
+		    // 1. 등급 (Active Style) 기준으로 내림차순 정렬 (최우선 순위)
+		    if (styleB !== styleA) {
+		        return styleB - styleA; // style 값이 클수록 (높은 등급일수록) 먼저
+		    }
+	        
+		    // 2. 유닛 수 (Count) 기준으로 내림차순 정렬 (2순위)
 		    if (countB !== countA) {
 		        return countB - countA;
 		    }
-		    // 2. 카운트가 같으면 이름 기준으로 오름차순 정렬
+		    // 3. 이름 기준으로 오름차순 정렬 (3순위)
 		    return traitA.localeCompare(traitB);
 		})
 	 	.forEach(([trait, count]) => {
@@ -290,7 +301,6 @@
 	        li.style.paddingLeft = "0px";
 	        li.classList.add("synergy-item");
 	        
-	        
 			// ⭐️ 새 코드: 아이콘을 감싸는 래퍼 DIV 생성
 			const iconWrapper = document.createElement("div");
 			iconWrapper.style.width = "30px";
@@ -306,7 +316,6 @@
 	            iconWrapper.style.backgroundSize = "cover";
 	            iconWrapper.style.backgroundRepeat = "no-repeat";
 	            iconWrapper.style.backgroundPosition = "center";
-	            
 	        }
 	        
 	        const icon = document.createElement("img"); //  아이콘 이미지 요소 생성
@@ -316,8 +325,6 @@
 			icon.src = traitData ? traitData.image : ""; //  시너지 이미지 URL 설정
 	        icon.alt = trait;
 	        icon.classList.add("synergy-icon");
-	        
-			
 	
 	        // ⭐️ 새 코드: 아이콘을 래퍼 안에 추가
 	        iconWrapper.appendChild(icon);
